@@ -181,53 +181,53 @@ def create_images( container ):
     frame = ttk.Frame(container)
     
     image = Image.open('hands2.png')
-    resized_hands_image = resize_image(image, int(image.width * 0.6), int(image.height * 0.6))
+    resized_hands_image = resize_image(image, int(image.width * 0.55), int(image.height * 0.55))
     data['hands'] = ImageTk.PhotoImage(resized_hands_image)
     label = ttk.Label(frame, image=data['hands'])
     label.pack()
     
     image = Image.open('img.png')
-    resized_img_image = resize_image(image, int(image.width * 0.4), int(image.height * 0.4))
+    resized_img_image = resize_image(image, int(image.width * 0.45), int(image.height * 0.45))
     data['img'] = ImageTk.PhotoImage(resized_img_image)
 
     label1 = ttk.Label(frame, image=data['img'])
-    label1.place(x=0, y=300*0.6)
+    label1.place(x=0, y=300*0.55)
     label1.bind( "<Button>", lambda event: load_image(label1, 1, event) )
 
     label2 = ttk.Label(frame, image=data['img'])
-    label2.place(x=75*0.5, y=150*0.6)
+    label2.place(x=75*0.55, y=150*0.55)
     label2.bind( "<Button>", lambda event: load_image(label2, 2, event) )
 
     label3 = ttk.Label(frame, image=data['img'])
-    label3.place(x=150*0.6, y=0)
+    label3.place(x=150*0.55, y=0)
     label3.bind( "<Button>", lambda event: load_image(label3, 3, event) )
 
     label4 = ttk.Label(frame, image=data['img'])
-    label4.place(x=300*0.6, y=0)
+    label4.place(x=300*0.55, y=0)
     label4.bind( "<Button>", lambda event: load_image(label4, 4, event) )
 
     label5 = ttk.Label(frame, image=data['img'])
-    label5.place(x=450*0.6, y=150*0.6)
+    label5.place(x=450*0.55, y=150*0.55)
     label5.bind( "<Button>", lambda event: load_image(label5, 5, event) )
    
     label6 = ttk.Label(frame, image=data['img'])
-    label6.place(x=1050*0.6, y=300*0.6)
+    label6.place(x=1050*0.55, y=300*0.55)
     label6.bind( "<Button>", lambda event: load_image(label6, 6, event) )
 
     label7 = ttk.Label(frame, image=data['img'])
-    label7.place(x=975*0.6, y=150*0.6)
+    label7.place(x=975*0.55, y=150*0.55)
     label7.bind( "<Button>", lambda event: load_image(label7, 7, event) )
 
     label8 = ttk.Label(frame, image=data['img'])
-    label8.place(x=900*0.6, y=0)
+    label8.place(x=900*0.55, y=0)
     label8.bind( "<Button>", lambda event: load_image(label8, 8, event) )
 
     label9 = ttk.Label(frame, image=data['img'])
-    label9.place(x=750*0.6, y=0)
+    label9.place(x=750*0.55, y=0)
     label9.bind( "<Button>", lambda event: load_image(label9, 9, event) )
 
     label10 = ttk.Label(frame, image=data['img'])
-    label10.place(x=600*0.6, y=150*0.6)
+    label10.place(x=600*0.55, y=150*0.55)
     label10.bind( "<Button>", lambda event: load_image(label10, 10, event) )
        
     return frame
@@ -258,13 +258,8 @@ data = { }
 # root window
 root = tk.Tk()
 root.title('Projeto Esmalte')
-
-# Definir a resolução da janela com base na resolução da tela
-screen_width = root.winfo_screenwidth()
-screen_height = root.winfo_screenheight()
-window_width = int(screen_width * 0.8)  # Defina a largura da janela para 80% da largura da tela
-window_height = int(screen_height * 0.8)  # Defina a altura da janela para 80% da altura da tela
-root.geometry(f"{window_width}x{window_height}")
+root.geometry('1240x1080')
+root.resizable(True, True)
 
 frame = create_window(root)
 frame.pack(expand=1)
