@@ -234,7 +234,7 @@ def criar_csv():
     with open(config['csv'], 'w', newline='', encoding='utf-8') as csvfile:
         csvwriter= csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         csvwriter.writerow(['id','idade', 'grupo'])
-        csvwriter.close()
+        csvfile.close()
     
 def archieve( ):
     global config
@@ -245,10 +245,17 @@ def archieve( ):
     for x in range(10):
         if 'file' + str(x+1) in data:
             count += 1
-    count = 10 # -------------------------------------------------------------------------------------------------------
+    
     if count == 10:
         config['id'] = config['entry_id'].get()
+        
         individuo = [ config['id'], config['entry_idade'].get(), config['combo_grupo'].get() ]
+        
+        if( len(individuo[1]) == 0 or len(individuo[2]) == 0 ):
+            messagebox.showerror(title='Erro', message='Indique a idade e/ou grupo.')
+            return 
+        
+        
         if( individuo[0] in pre['individuo'] ):
             busca = pre['individuo'][individuo[0]]
             if( busca == individuo ):
@@ -269,7 +276,7 @@ def archieve( ):
                 adicionar_csv(individuo)
                 arquivar_definitivo(individuo)
     else:
-        messagebox.showerror(title='Erro', message='Preencha todos os dedos!')
+        messagebox.showerror(title='Erro', message='Indique uma imagem para cada dedo!')
 
 def create_form( container ):
     global config
@@ -344,22 +351,22 @@ def define_output( container ):
                                             title='Selecione onde serão arquivadas as imagens',
                                             initialdir=config['output_dir'] )    
         if( diretorio != () and os.path.isdir(diretorio) ):
-            config['csv'] = os.path.join(config['output_dir'],'data.csv')
+            config['csv'] = os.path.join(diretorio,'data.csv')
             if( not os.path.isfile( config['csv'] ) ):
                 answer = messagebox.askyesno(title='Importante',
                                     message='Não foi encontrado um banco de imagens existente.\nDeseja criar um novo?')
                 if (not answer):
-                    return False
+                    continue
                 
                 criar_csv()
                 
             if ( not load_csv() ):                                
                 messagebox.showerror(title='Erro',
                                      message='O banco de imagens do local indicado está inconsistente.\n')
-                return False    
+                continue
             
-            copiar_pre_interface()
             config['output_dir'] = diretorio
+            copiar_pre_interface()
             return True
       
 
@@ -369,7 +376,7 @@ def load_image( widget, number, event ):
     
     file = filedialog.askopenfilename(parent=widget, title='Selecione uma imagem',
                                       initialdir=config['camera_dir'],
-                                      filetypes=(('Image files','*.jpg'),('All files', '*.*') ) )
+                                      filetypes=(('Image files','*.jpg *.png'),('All files', '*.*') ) )
     
     if( file != () and os.path.isfile(file) ):
         
@@ -379,7 +386,7 @@ def load_image( widget, number, event ):
             img_preproc_cv2 = preproc.preproc( cv2.imread(file) )
             img_preproc_cv2_rgb = cv2.cvtColor(img_preproc_cv2, cv2.COLOR_BGR2RGB)
             img_preproc = Image.fromarray(img_preproc_cv2_rgb)
-            img = ImageTk.PhotoImage(img_preproc.resize((150,150)))
+            img = ImageTk.PhotoImage(img_preproc.resize((100,100)))
             
             data['file' + str(number)] = file
             data['preproc' + str(number)] = img_preproc_cv2
@@ -399,9 +406,9 @@ def load_image( widget, number, event ):
             
             messagebox.showerror(title='Erro', message='Não foi possível identificar!')
 
-def resize_image(image, width, height):
-    new_image = image.resize((width, height))
-    return new_image                                
+#def resize_image(image, width, height):
+#    new_image = image.resize((width, height))
+#    return new_image                                
     
     
 def create_images( container ):
